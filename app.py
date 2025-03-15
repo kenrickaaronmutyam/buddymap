@@ -12,19 +12,117 @@ OPENCAGE_API_KEY = os.getenv('OPENCAGE_API_KEY')
 geocoder = OpenCageGeocode(OPENCAGE_API_KEY)
 
 HTML = """
+```html
 <!doctype html>
-<html>
+<html lang="en">
 <head>
-    <title>Find Nearby Places</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BuddyMap - Find Nearby Places</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+
+        h2 {
+            color: #2c3e50;
+        }
+
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background 0.3s ease;
+            margin-top: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        #result {
+            margin-top: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #27ae60;
+        }
+
+        h3 {
+            color: #2c3e50;
+            margin-top: 20px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        li {
+            background-color: #ecf0f1;
+            margin-bottom: 10px;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        li:hover {
+            background-color: #d0e6f1;
+        }
+
+        a {
+            text-decoration: none;
+            color: #3498db;
+            font-weight: bold;
+            transition: color 0.2s ease;
+        }
+
+        a:hover {
+            color: #2980b9;
+        }
+
+        @media (max-width: 480px) {
+            button {
+                width: 100%;
+            }
+
+            li {
+                font-size: 14px;
+                padding: 12px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <h2>Get Current Location and Nearby Places</h2>
+    <h2>BuddyMap - Find Nearby Places</h2>
     <button onclick="getLocation()">Get Location</button>
     <p id="result"></p>
     <h3>Nearby Places:</h3>
-    <ul id="places"></ul>
-
-    <script>
+    <ul id="places">
+        <li>Starbucks <a href="https://www.google.com/maps/search/?api=1&query=Starbucks" target="_blank">View</a></li>
+        <li>Pizza Hut <a href="https://www.google.com/maps/search/?api=1&query=Pizza+Hut" target="_blank">View</a></li>
+        <li>Book Store <a href="https://www.google.com/maps/search/?api=1&query=Book+Store" target="_blank">View</a></li>
+    </ul>
+<script>
         function getLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(showPosition, showError);
@@ -89,6 +187,7 @@ HTML = """
     </script>
 </body>
 </html>
+```
 """
 
 # Flask route to serve the HTML page
