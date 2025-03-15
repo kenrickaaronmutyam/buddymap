@@ -122,7 +122,7 @@ HTML = """
 </head>
 <body>
     <h2>BuddyMap - Find Nearby Places</h2>
-    <button onclick="getLocation()">Get Location</button>
+    <button onclick="getLocation()">Where Am I? </button>
     <p id="result"></p>
     <h3>Nearby Places:</h3>
     <h4>Powered by <strong>Kenrick Aaron Mutyam</strong></h4>
