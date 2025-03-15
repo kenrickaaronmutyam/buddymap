@@ -12,7 +12,6 @@ OPENCAGE_API_KEY = os.getenv('OPENCAGE_API_KEY')
 geocoder = OpenCageGeocode(OPENCAGE_API_KEY)
 
 HTML = """
-```html
 <!doctype html>
 <html lang="en">
 <head>
@@ -117,6 +116,7 @@ HTML = """
     <button onclick="getLocation()">Get Location</button>
     <p id="result"></p>
     <h3>Nearby Places:</h3>
+    <h4>Powered by <strong>Kenrick Aaron</strong></h4>
     <ul id="places">
         <li>Starbucks <a href="https://www.google.com/maps/search/?api=1&query=Starbucks" target="_blank">View</a></li>
         <li>Pizza Hut <a href="https://www.google.com/maps/search/?api=1&query=Pizza+Hut" target="_blank">View</a></li>
