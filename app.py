@@ -122,7 +122,7 @@ HTML = """
 </head>
 <body>
     <h2>BuddyMap - Find Nearby Places</h2>
-    <button onclick="getLocation()">Where Am I? </button>
+    <button onclick="getLocation()">Where Am I ? Click to Know </button>
     <p id="result"></p>
     <h3>Nearby Places:</h3>
     <h4>Powered by <strong>Kenrick Aaron Mutyam</strong></h4>
@@ -132,71 +132,70 @@ HTML = """
         <li>Book Store <a href="https://www.google.com/maps/search/?api=1&query=Book+Store" target="_blank">View</a></li>
     </ul>
 <script>
-        function getLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(showPosition, showError);
-            } else {
-                document.getElementById("result").innerHTML = "Geolocation is not supported by this browser.";
-            }
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        } else {
+            document.getElementById("result").innerHTML = "Geolocation is not supported by this browser.";
         }
+    }
 
-        function showPosition(position) {
-            fetch('/location', {
+    function showPosition(position) {
+        fetch('/location', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById("result").innerHTML = 
+                `Latitude: ${data.latitude}, Longitude: ${data.longitude}<br>
+                Location: ${data.location}`;
+
+            // Fetch nearby places
+            fetch('/places', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify({
-                    latitude: position.coords.latitude,
-                    longitude: position.coords.longitude
+                    latitude: data.latitude,
+                    longitude: data.longitude
                 })
             })
             .then(response => response.json())
             .then(data => {
-                document.getElementById("result").innerHTML = 
-                    `Latitude: ${data.latitude}, Longitude: ${data.longitude}<br>
-                    Location: ${data.location}`;
-
-                // Fetch nearby places
-                fetch('/places', {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify({
-                        latitude: data.latitude,
-                        longitude: data.longitude
-                    })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    const placesList = document.getElementById("places");
-                    placesList.innerHTML = "";
-                    data.forEach(place => {
-                        const li = document.createElement("li");
-                        li.textContent = place;
-                        placesList.appendChild(li);
-                    });
+                const placesList = document.getElementById("places");
+                placesList.innerHTML = "";
+                data.forEach(place => {
+                    const li = document.createElement("li");
+                    li.innerHTML = `${place.name} (${place.type}) <a href="${place.link}" target="_blank">View</a>`;
+                    placesList.appendChild(li);
                 });
             });
-        }
+        });
+    }
 
-        function showError(error) {
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    alert("User denied the request for Geolocation.");
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    alert("Location information is unavailable.");
-                    break;
-                case error.TIMEOUT:
-                    alert("The request to get user location timed out.");
-                    break;
-                case error.UNKNOWN_ERROR:
-                    alert("An unknown error occurred.");
-                    break;
-            }
+    function showError(error) {
+        switch (error.code) {
+            case error.PERMISSION_DENIED:
+                alert("User denied the request for Geolocation.");
+                break;
+            case error.POSITION_UNAVAILABLE:
+                alert("Location information is unavailable.");
+                break;
+            case error.TIMEOUT:
+                alert("The request to get user location timed out.");
+                break;
+            case error.UNKNOWN_ERROR:
+                alert("An unknown error occurred.");
+                break;
         }
-    </script>
+    }
+</script>
 </body>
 </html>
-```
 """
 
 # Flask route to serve the HTML page
