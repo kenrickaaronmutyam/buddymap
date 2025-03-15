@@ -1,12 +1,13 @@
 from flask import Flask, render_template_string, request, jsonify
 from opencage.geocoder import OpenCageGeocode
+import os
 import requests
 
 app = Flask(__name__)
 
 # API Keys (replace with your actual keys)
-GOOGLE_API_KEY = 'AIzaSyB-aUav8DSYUJPvKIFJvdjAYR6iyWNAJ1g'
-OPENCAGE_API_KEY = '4312606e87464e21be017bdd3876e69f'
+GOOGLE_API_KEY = os.getenv('GOOGLE_API_KEY')
+OPENCAGE_API_KEY = os.getenv('OPENCAGE_API_KEY')
 
 geocoder = OpenCageGeocode(OPENCAGE_API_KEY)
 
