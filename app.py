@@ -236,8 +236,17 @@ def places():
 
         for place in results:
             name = place.get('name')
+            place_lat = place['geometry']['location']['lat']
+            place_lon = place['geometry']['location']['lng']
+            # Create a Google Maps link for directions
+            map_link = f"https://www.google.com/maps/dir/?api=1&destination={place_lat},{place_lon}"
+
             if name:
-                places_list.append(f"{place_type.replace('_', ' ').title()}: {name}")
+                places_list.append({
+                    "name": name,
+                    "type": place_type.replace('_', ' ').title(),
+                    "link": map_link
+                })
 
     return jsonify(places_list)
 
